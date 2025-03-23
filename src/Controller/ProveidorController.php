@@ -51,8 +51,22 @@ class ProveidorController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $em->persist($proveidor);
         $em->flush();
-        $this->addFlash('sucess', 'Proveidor afegit correctament!');
+        $this->addFlash('success', 'Proveïdor afegit correctament!');
         return $this->redirectToRoute('app_index_proveidor');
+    }
+
+    /**
+     * @Route("/editar/{id}", name="app_editar_proveidor")
+     */
+    public function edit(int $id, ProveidorRepository $proveidorRepository, Request $request): Response
+    {
+        $proveidor = $proveidorRepository->findOneById($id);
+        if (null === $proveidor) {
+            throw $this->createNotFoundException();
+        }
+        return $this->render('proveidor/edit.html.twig', [
+            'controller_name' => 'ProveidorController',
+        ]);
     }
 
     /**
@@ -67,7 +81,7 @@ class ProveidorController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $em->remove($proveidor);
         $em->flush();
-        $this->addFlash('sucess', 'Proveïdor eliminat correctament!');
+        $this->addFlash('success', 'Proveïdor eliminat correctament!');
         return $this->redirectToRoute('app_index_proveidor');
     }
 }
