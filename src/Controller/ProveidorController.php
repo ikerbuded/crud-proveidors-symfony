@@ -58,12 +58,9 @@ class ProveidorController extends AbstractController
     /**
      * @Route("/editar/{id}", name="app_editar_proveidor")
      */
-    public function edit(int $id, ProveidorRepository $proveidorRepository, Request $request): Response
+    public function edit(int $id): Response
     {
-        $proveidor = $proveidorRepository->findOneById($id);
-        if (null === $proveidor) {
-            throw $this->createNotFoundException();
-        }
+
         return $this->render('proveidor/edit.html.twig', [
             'controller_name' => 'ProveidorController',
         ]);
