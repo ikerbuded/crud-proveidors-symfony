@@ -54,4 +54,20 @@ class ProveidorController extends AbstractController
         $this->addFlash('sucess', 'Proveidor afegit correctament!');
         return $this->redirectToRoute('app_index_proveidor');
     }
+
+    /**
+     * @Route("/delete/{id}",name="app_eliminar_proveidor")
+     */
+    public function delete(int $id, ProveidorRepository $proveidorRepository): Response
+    {
+        $proveidor = $proveidorRepository->findOneById($id);
+        if (null === $proveidor) {
+            throw $this->createNotFoundException();
+        }
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($proveidor);
+        $em->flush();
+        $this->addFlash('sucess', 'Proveïdor eliminat correctament!');
+        return $this->redirectToRoute('app_index_proveidor');
+    }
 }
