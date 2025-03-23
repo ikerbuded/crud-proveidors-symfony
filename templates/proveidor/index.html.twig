@@ -3,7 +3,7 @@
 {% block title %}Llistat Proveidors
 {% endblock %}
 {% block stylesheets %}
-	{{parent}}
+	{{ parent() }}
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 {% endblock %}
 
@@ -30,7 +30,7 @@
 						<td>{{ proveidor.telefon }}</td>
 						<td>{{ proveidor.tipus }}</td>
 						<td>
-							{% if proveidor.estat %}
+							{% if proveidor.actiu %}
 								<span class="badge bg-success">Actiu</span>
 							{% else %}
 								<span class="badge bg-danger">No Actiu</span>
@@ -43,7 +43,7 @@
 					</tr>
 				{% else %}
 					<tr class="table-warning">
-						<td>No s'han trobat proveïdors</td>
+						<td colspan="6">No s'han trobat proveïdors</td>
 					</tr>
 				{% endfor %}
 			</tbody>
