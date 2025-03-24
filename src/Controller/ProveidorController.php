@@ -6,8 +6,6 @@ use App\Entity\Proveidor;
 use App\Repository\ProveidorRepository;
 use DateTime;
 use DateTimeImmutable;
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -58,12 +56,34 @@ class ProveidorController extends AbstractController
     /**
      * @Route("/editar/{id}", name="app_editar_proveidor")
      */
-    public function edit(int $id): Response
+    public function edit(int $id, ProveidorRepository $proveidorRepository): Response
     {
+        $proveidor = $proveidorRepository->findOneById($id);
+        if (null === $proveidor) {
+            throw $this->createNotFoundException();
+        }
+        return $this->render('proveidor/edit.html.twig', ['id' => $id, 'proveidor' => $proveidor]);
+    }
 
-        return $this->render('proveidor/edit.html.twig', [
-            'controller_name' => 'ProveidorController',
-        ]);
+    /**
+     * @Route("/update/{id}", name="app_actualitzar_proveidor")
+     */
+    public function update(int $id, ProveidorRepository $proveidorRepository, Request $request): Response
+    {
+        $proveidor = $proveidorRepository->findOneById($id);
+        if (null === $proveidor) {
+            throw $this->createNotFoundException();
+        }
+        $proveidor->setNom($request->request->get('nom'));
+        $proveidor->setEmail($request->request->get('email'));
+        $proveidor->setTelefon($request->request->get('telefon'));
+        $proveidor->setTipus($request->request->get('tipus'));
+        $proveidor->setActiu($request->request->get('actiu') === 'on');
+        $proveidor->setDataActualitzacio(new DateTime());
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
+        $this->addFlash('success', 'Proveïdor editat correctament!');
+        return $this->redirectToRoute('app_index_proveidor');
     }
 
     /**
