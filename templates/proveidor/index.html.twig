@@ -37,6 +37,7 @@
 							{% endif %}
 						</td>
 						<td>
+							<a href="{{ path('app_mostrar_proveidor', {'id': proveidor.id}) }}" class="btn btn-primary bi bi-eye-fill"></a>
 							<a href="{{ path('app_editar_proveidor', {'id': proveidor.id}) }}" class="btn btn-warning bi bi-pencil-fill"></a>
 							<a href="{{ path('app_eliminar_proveidor', {'id': proveidor.id}) }}" class="btn btn-danger bi bi-trash-fill"></a>
 						</td>
