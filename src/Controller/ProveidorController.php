@@ -65,7 +65,13 @@ class ProveidorController extends AbstractController
             $this->addFlash('success', 'Proveïdor afegit correctament!');
             return $this->redirectToRoute('app_index_proveidor');
         } catch (UniqueConstraintViolationException $e) {
-            $this->addFlash('danger', 'Ja existeix un proveïdor amb aquest email.');
+            if (str_contains($e->getMessage(), 'UNIQ_5C16D776E7927C74')) {
+                $message = 'Ja existeix un proveïdor amb aquest email.';
+            }
+            if (str_contains($e->getMessage(), 'UNIQ_5C16D776897DA477')) {
+                $message = 'Ja existeix un proveïdor amb aquest telèfon.';
+            }
+            $this->addFlash('danger', $message);
             return $this->redirectToRoute('app_afegir_proveidor');
         }
     }
@@ -126,7 +132,14 @@ class ProveidorController extends AbstractController
             $this->addFlash('success', 'Proveïdor editat correctament!');
             return $this->redirectToRoute('app_index_proveidor');
         } catch (UniqueConstraintViolationException $e) {
-            $this->addFlash('danger', 'Ja existeix un proveïdor amb aquest email.');
+            if (str_contains($e->getMessage(), 'UNIQ_5C16D776E7927C74')) {
+                $message = 'Ja existeix un proveïdor amb aquest email.';
+            }
+            if (str_contains($e->getMessage(), 'UNIQ_5C16D776897DA477')) {
+                $message = 'Ja existeix un proveïdor amb aquest telèfon.';
+            }
+            $this->addFlash('danger', $message);
+
             return $this->redirectToRoute('app_editar_proveidor', ['id' => $id]);
         }
     }
