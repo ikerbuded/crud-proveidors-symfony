@@ -71,6 +71,7 @@ class ProveidorController extends AbstractController
             if (str_contains($e->getMessage(), 'UNIQ_5C16D776897DA477')) {
                 $this->addFlash('danger', 'Ja existeix un proveïdor amb aquest telèfon.');
             }
+
             return $this->redirectToRoute('app_afegir_proveidor');
         }
     }
