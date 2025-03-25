@@ -54,13 +54,13 @@ class ProveidorController extends AbstractController
                 $this->addFlash('danger', $error->getMessage());
             }
             return $this->redirectToRoute('app_afegir_proveidor');
+        } else {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($proveidor);
+            $em->flush();
+            $this->addFlash('success', 'Proveïdor afegit correctament!');
+            return $this->redirectToRoute('app_index_proveidor');
         }
-
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($proveidor);
-        $em->flush();
-        $this->addFlash('success', 'Proveïdor afegit correctament!');
-        return $this->redirectToRoute('app_index_proveidor');
     }
 
     /**
@@ -109,12 +109,12 @@ class ProveidorController extends AbstractController
                 $this->addFlash('danger', $error->getMessage());
             }
             return $this->redirectToRoute('app_editar_proveidor', ['id' => $id]);
+        } else {
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+            $this->addFlash('success', 'Proveïdor editat correctament!');
+            return $this->redirectToRoute('app_index_proveidor');
         }
-
-        $em = $this->getDoctrine()->getManager();
-        $em->flush();
-        $this->addFlash('success', 'Proveïdor editat correctament!');
-        return $this->redirectToRoute('app_index_proveidor');
     }
 
     /**
