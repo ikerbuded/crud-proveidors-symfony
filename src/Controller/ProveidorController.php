@@ -6,6 +6,7 @@ use App\Entity\Proveidor;
 use App\Repository\ProveidorRepository;
 use DateTime;
 use DateTimeImmutable;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -54,12 +55,18 @@ class ProveidorController extends AbstractController
                 $this->addFlash('danger', $error->getMessage());
             }
             return $this->redirectToRoute('app_afegir_proveidor');
-        } else {
-            $em = $this->getDoctrine()->getManager();
+        }
+
+        $em = $this->getDoctrine()->getManager();
+
+        try {
             $em->persist($proveidor);
             $em->flush();
             $this->addFlash('success', 'Proveïdor afegit correctament!');
             return $this->redirectToRoute('app_index_proveidor');
+        } catch (UniqueConstraintViolationException $e) {
+            $this->addFlash('danger', 'Ja existeix un proveïdor amb aquest email.');
+            return $this->redirectToRoute('app_afegir_proveidor');
         }
     }
 
@@ -96,6 +103,7 @@ class ProveidorController extends AbstractController
         if (null === $proveidor) {
             throw $this->createNotFoundException();
         }
+
         $proveidor->setNom($request->request->get('nom'));
         $proveidor->setEmail($request->request->get('email'));
         $proveidor->setTelefon($request->request->get('telefon'));
@@ -109,11 +117,17 @@ class ProveidorController extends AbstractController
                 $this->addFlash('danger', $error->getMessage());
             }
             return $this->redirectToRoute('app_editar_proveidor', ['id' => $id]);
-        } else {
-            $em = $this->getDoctrine()->getManager();
+        }
+
+        $em = $this->getDoctrine()->getManager();
+
+        try {
             $em->flush();
             $this->addFlash('success', 'Proveïdor editat correctament!');
             return $this->redirectToRoute('app_index_proveidor');
+        } catch (UniqueConstraintViolationException $e) {
+            $this->addFlash('danger', 'Ja existeix un proveïdor amb aquest email.');
+            return $this->redirectToRoute('app_editar_proveidor', ['id' => $id]);
         }
     }
 

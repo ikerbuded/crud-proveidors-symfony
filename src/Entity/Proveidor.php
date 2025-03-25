@@ -2,7 +2,8 @@
 
 namespace App\Entity;
 
-use App\Repository\ProveidorRepository;
+use App\Validator\UniqueEmail;
+use App\Validator\UniqueTelefon;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -30,6 +31,7 @@ class Proveidor
      * @Assert\NotBlank(message="L'email no pot estar buit.")
      * @Assert\Length(max=150, maxMessage="El email no pot tenir més de 150 caràcters.")
      * @Assert\Email(message="L'email no és vàlid.")
+     * @UniqueEmail
      */
     private ?string $email = null;
 
@@ -40,6 +42,7 @@ class Proveidor
      *     pattern="/^\d{9}$/",
      *     message="El telèfon ha de tenir exactament 9 dígits."
      * )
+     * @UniqueTelefon
      */
     private ?string $telefon = null;
 
