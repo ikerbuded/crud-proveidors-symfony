@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ProveidorRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -19,38 +20,49 @@ class Proveidor
 
     /**
      * @ORM\Column(type="string", length=150)
+     * @Assert\NotBlank(message="El nom no pot estar buit.")
+     * @Assert\Length(max=150, maxMessage="El nom no pot tenir més de 150 caràcters.")
      */
-    private $nom;
+    private ?string $nom = null;
 
     /**
-     * @ORM\Column(type="string", length=150)
+     * @ORM\Column(type="string", length=150, unique=true)
+     * @Assert\NotBlank(message="L'email no pot estar buit.")
+     * @Assert\Length(max=150, maxMessage="El email no pot tenir més de 150 caràcters.")
+     * @Assert\Email(message="L'email no és vàlid.")
      */
-    private $email;
+    private ?string $email = null;
 
     /**
-     * @ORM\Column(type="string", length=9)
+     * @ORM\Column(type="string", length=9, unique=true)
+     * @Assert\NotBlank(message="El telèfon no pot estar buit.")
+     * @Assert\Regex(
+     *     pattern="/^\d{9}$/",
+     *     message="El telèfon ha de tenir exactament 9 dígits."
+     * )
      */
-    private $telefon;
+    private ?string $telefon = null;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\NotBlank(message="El tipus de proveïdor no pot estar buit.")
      */
-    private $tipus;
+    private ?string $tipus = null;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $actiu;
+    private bool $actiu = true;
 
     /**
      * @ORM\Column(type="datetime_immutable")
      */
-    private $dataCreacio;
+    private ?\DateTimeImmutable $dataCreacio = null;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $dataActualitzacio;
+    private ?\DateTimeInterface $dataActualitzacio = null;
 
     public function getId(): ?int
     {

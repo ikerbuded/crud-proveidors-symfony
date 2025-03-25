@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProveidorController extends AbstractController
 {
@@ -36,7 +37,7 @@ class ProveidorController extends AbstractController
     /**
      * @Route("/store", name="app_guardar_proveidor")
      */
-    public function store(Request $request): Response
+    public function store(Request $request, ValidatorInterface $validator): Response
     {
         $proveidor = new Proveidor();
         $proveidor->setNom($request->request->get('nom'));
@@ -46,6 +47,15 @@ class ProveidorController extends AbstractController
         $proveidor->setActiu($request->request->get('actiu') === 'on');
         $proveidor->setDataCreacio(new DateTimeImmutable());
         $proveidor->setDataActualitzacio(new DateTime());
+
+        $errors = $validator->validate($proveidor);
+        if (count($errors) > 0) {
+            foreach ($errors as $error) {
+                $this->addFlash('danger', $error->getMessage());
+            }
+            return $this->redirectToRoute('app_afegir_proveidor');
+        }
+
         $em = $this->getDoctrine()->getManager();
         $em->persist($proveidor);
         $em->flush();
@@ -80,7 +90,7 @@ class ProveidorController extends AbstractController
     /**
      * @Route("/update/{id}", name="app_actualitzar_proveidor")
      */
-    public function update(int $id, ProveidorRepository $proveidorRepository, Request $request): Response
+    public function update(int $id, ProveidorRepository $proveidorRepository, Request $request, ValidatorInterface $validator): Response
     {
         $proveidor = $proveidorRepository->findOneById($id);
         if (null === $proveidor) {
@@ -92,9 +102,18 @@ class ProveidorController extends AbstractController
         $proveidor->setTipus($request->request->get('tipus'));
         $proveidor->setActiu($request->request->get('actiu') === 'on');
         $proveidor->setDataActualitzacio(new DateTime());
+
+        $errors = $validator->validate($proveidor);
+        if (count($errors) > 0) {
+            foreach ($errors as $error) {
+                $this->addFlash('danger', $error->getMessage());
+            }
+            return $this->redirectToRoute('app_editar_proveidor', ['id' => $id]);
+        }
+
         $em = $this->getDoctrine()->getManager();
         $em->flush();
-        $this->addFlash('warning', 'Proveïdor editat correctament!');
+        $this->addFlash('success', 'Proveïdor editat correctament!');
         return $this->redirectToRoute('app_index_proveidor');
     }
 
