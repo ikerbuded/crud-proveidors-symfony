@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Error
+{% endblock %}
+
+{% block body %}
+	<div class="container text-center mt-5">
+		<h1 class="display-4 text-danger">Oops!</h1>
+		<p>S'ha produït un error inesperat.</p>
+		<a href="{{ path('app_index_proveidor') }}" class="btn btn-primary mt-3">Tornar al Llistat</a>
+	</div>
+{% endblock %}
