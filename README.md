@@ -22,4 +22,4 @@ Doctrine ORM (Gestió de base de dades)
 Docker (Per al desplegament)
 
 Documentació Pas a Pas en aquest enllaç -->
-https://drive.google.com/file/d/1jD_AsYHuf-R3BoHdxvp8cZdhGmvHFcTn/view?usp=sharing 
+https://drive.google.com/file/d/1jD_AsYHuf-R3BoHdxvp8cZdhGmvHFcTn/view?usp=sharing
