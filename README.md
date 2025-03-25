@@ -15,7 +15,7 @@ MySQL (Base de dades)
 
 Twig (Motor de plantilles)
 
-Bootstrap/Tailwind (Per al disseny responsive)
+Bootstrap (Per al disseny responsive)
 
 Doctrine ORM (Gestió de base de dades)
 
